@@ -1,27 +1,6 @@
 const express = require("express")
-// const {expression, string} = require("joi");
-const Joi = require("joi")
-const mongoose = require("mongoose");
-
 const router = express.Router()
-
-const genreSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-        minLength: 5
-    }
-})
-
-const Genre = mongoose.model("genre", genreSchema)
-
-function validator(genre) {
-    const schema = Joi.object({
-        name: Joi.string().required().min(5)
-    })
-    return schema.validate(genre)
-}
-
+const {Genre, validate} = require("../models/genres")
 router.get('/', async (req, res) => {
     const result = await Genre.find()
     res.send(result)
@@ -35,7 +14,7 @@ router.get("/:id", async (req, res) => {
 })
 
 router.put("/:id", async (req, res) => {
-    const {error} = validator(req.body)
+    const {error} = validate(req.body)
     if (error) return res.status(404).send(error.details[0].message)
     //
     const genre = await Genre.findByIdAndUpdate({_id: req.params.id}, {name: req.body.name})
@@ -46,7 +25,7 @@ router.put("/:id", async (req, res) => {
 })
 
 router.post("/", async (req, res) => {
-    const {error} = validator(req.body)
+    const {error} = validate(req.body)
     if (error) return res.status(404).send(error.details[0].message)
     let genre = new Genre({name: req.body.name})
 

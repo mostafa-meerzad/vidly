@@ -1,25 +1,7 @@
 const express = require("express");
-const Joi = require("joi");
-const mongoose = require("mongoose");
 const router = express.Router();
 
-const userSchema = new mongoose.Schema({
-  name: String,
-  phone: String,
-  isGold: Boolean,
-});
-
-const User = mongoose.model("users", userSchema);
-
-function validateUser(user) {
-  const schema = Joi.object({
-    name: Joi.string().required().min(3),
-    phone: Joi.string().required(),
-    isGold: Joi.boolean(),
-  });
-
-  return schema.validate(user);
-}
+const {User, validate} = require("../models/customer");
 
 router.get("/", async (req, res) => {
   const result = await User.find();
@@ -33,7 +15,7 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   // validate user input
-  const { error } = validateUser(req.body);
+  const { error } = validate(req.body);
   if (error) return res.status(404).send(error.details[0].message);
   // make a new user
   let user = new User({
@@ -49,7 +31,7 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   // validate the input
-  const { error } = validateUser(req.body);
+  const { error } = validate(req.body);
   if (error) return res.status(404).send(error.details[0].message);
   // find the user
   const user = await User.findByIdAndUpdate(
