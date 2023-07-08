@@ -40,7 +40,7 @@ router.put("/:id", async (req, res) => {
     //
     const genre = await Genre.findByIdAndUpdate({_id: req.params.id}, {name: req.body.name})
     if (!genre) return res.status(404).send("no such genre")
-    genre.set({name: req.body.name})
+    // genre.set({name: req.body.name})
 
     res.send(genre)
 })
