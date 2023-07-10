@@ -21,3 +21,4 @@ function validator(genre) {
 
 exports.Genre = Genre
 exports.validate = validator
+exports.genreSchema = genreSchema
