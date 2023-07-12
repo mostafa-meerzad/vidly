@@ -1,15 +1,15 @@
 const express = require("express");
 const router = express.Router();
 
-const {User, validate} = require("../models/customer");
+const {Customer, validate} = require("../models/customer");
 
 router.get("/", async (req, res) => {
-  const result = await User.find();
+  const result = await Customer.find();
   res.send(result);
 });
 
 router.get("/:id", async (req, res) => {
-  const result = await User.findById({ _id: req.params.id });
+  const result = await Customer.findById({ _id: req.params.id });
   res.send(result);
 });
 
@@ -18,15 +18,15 @@ router.post("/", async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(404).send(error.details[0].message);
   // make a new user
-  let user = new User({
+  let customer = new Customer({
     name: req.body.name,
     phone: req.body.phone,
     isGold:req.body.isGold
   });
   // save user to the database
-  user = await user.save();
+  customer = await customer.save();
   // send respond to user
-  res.send(user);
+  res.send(customer);
 });
 
 router.put("/:id", async (req, res) => {
@@ -34,7 +34,7 @@ router.put("/:id", async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(404).send(error.details[0].message);
   // find the user
-  const user = await User.findByIdAndUpdate(
+  const user = await Customer.findByIdAndUpdate(
     { _id: req.params.id },
     { name: req.body.name, phone: req.body.phone, isGold:req.body.isGold }, {new:true}
   );
@@ -43,7 +43,7 @@ router.put("/:id", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res)=>{
- const user = await User.findByIdAndRemove({_id: req.params.id})
+ const user = await Customer.findByIdAndRemove({_id: req.params.id})
 
  res.send(user)
 
