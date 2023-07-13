@@ -28,7 +28,9 @@ router.post("/", async (req, res) => {
 
   await user.save();
   //   res.send(user);
-  const token = jwt.sign({_id:user._id}, config.get("jwtPrivateKey"))
+  // Information Expert Principle
+  // const token = jwt.sign({_id:user._id}, config.get("jwtPrivateKey"))
+  const token = user.generateToken()
   res.header("x-auth-token", token).send(_.pick(user, ["name", "_id", "email"]));
 });
 
