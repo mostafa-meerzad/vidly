@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { Genre, validate } = require("../models/genres");
 const auth = require("../middleware/auth");
+const { isAdmin } = require("../middleware/admin");
 router.get("/", async (req, res) => {
   const result = await Genre.find();
   res.send(result);
@@ -40,8 +41,8 @@ router.post("/", auth, async (req, res) => {
 
   res.send(genre);
 });
-
-router.delete("/:id", auth, async (req, res) => {
+// we can pass multiple middleware function to a single route by putting them in an array
+router.delete("/:id", [auth, isAdmin], async (req, res) => {
   const genre = await Genre.findByIdAndRemove({ _id: req.params.id });
 
   res.send(genre);
