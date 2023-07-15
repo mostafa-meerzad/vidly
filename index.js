@@ -8,7 +8,22 @@ const rentals = require("./routes/rentals");
 const users = require("./routes/users")
 const auth = require("./routes/auth");
 const config = require("config");
-const error = require("./middleware/error")
+const error = require("./middleware/error");
+const logger = require("./logger");
+
+
+process.on("uncaughtException", (err) => {
+  // console.log("error occurred \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
+  // console.log(err);
+  logger.info(err.message)
+});
+
+process.on("unhandledRejection", (err) => {
+  logger(err.message)
+})
+
+throw new Error("unhandledRejection");
+// throw new Error("something went wrong during startup");
 
 if(!config.get("jwtPrivateKey")){
   console.error("Fatal error jwtPrivateKey is not defined");

@@ -1,3 +1,10 @@
 {"level":"info","message":"something went wrong"}
 {"level":"error","message":"something went wrong"}
 {"level":"error","message":"something went wrong"}
+{"level":"error"}
+{"level":"error"}
+{"level":"info"}
+{"level":"info","message":"something went wrong during startup"}
+{"level":"info","message":"unhandledRejection"}
+{"level":"info","message":"unhandledRejection"}
+{"level":"info","message":"unhandledRejection"}
